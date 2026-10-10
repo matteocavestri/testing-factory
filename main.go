@@ -16,7 +16,7 @@ func main() {
 		os.Exit(1)
 	}
 	city := strings.Join(os.Args[1:], " ")
-	u := "https://wttr.in/" + url.PathEscape(city) + "?format=%l:+%c+%t+(feels+%f),+%C,+humidity+%h,+wind+%w"
+	u := buildURL(city)
 
 	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Get(u)
@@ -31,4 +31,8 @@ func main() {
 		os.Exit(1)
 	}
 	fmt.Println(strings.TrimSpace(string(body)))
+}
+
+func buildURL(city string) string {
+	return "https://wttr.in/" + url.PathEscape(city) + "?format=%l:+%c+%t+(feels+%f),+%C,+humidity+%h,+wind+%w"
 }
