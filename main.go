@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io"
 	"net/http"
@@ -11,12 +12,21 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Fprintln(os.Stderr, "usage: weather <city>")
+	units := flag.String("units", "metric", "units: metric or imperial")
+	flag.StringVar(units, "u", "metric", "units: metric or imperial")
+	flag.Parse()
+
+	if *units != "metric" && *units != "imperial" {
+		fmt.Fprintf(os.Stderr, "error: invalid units %q (must be 'metric' or 'imperial')\n", *units)
 		os.Exit(1)
 	}
-	city := strings.Join(os.Args[1:], " ")
-	u := buildURL(city)
+
+	if flag.NArg() < 1 {
+		fmt.Fprintln(os.Stderr, "usage: weather <city> [--units metric|imperial]")
+		os.Exit(1)
+	}
+	city := strings.Join(flag.Args(), " ")
+	u := buildURL(city, *units)
 
 	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Get(u)
@@ -33,6 +43,13 @@ func main() {
 	fmt.Println(strings.TrimSpace(string(body)))
 }
 
-func buildURL(city string) string {
-	return "https://wttr.in/" + url.PathEscape(city) + "?format=%l:+%c+%t+(feels+%f),+%C,+humidity+%h,+wind+%w"
+func buildURL(city, units string) string {
+	var u string
+	switch units {
+	case "imperial":
+		u = "?u"
+	case "metric":
+		u = "?m"
+	}
+	return "https://wttr.in/" + url.PathEscape(city) + "?format=" + u + "%l:+%c+%t+(feels+%f),+%C,+humidity+%h,+wind+%w"
 }
