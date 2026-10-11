@@ -1,0 +1,38 @@
+{
+  "response": "Success.",
+  "request": {
+    "type": "archived",
+    "time": "Mon, 14 Oct 2025 12:00 MET"
+  },
+  "current_condition": [
+    {
+      "value": "Rome Value"
+    }
+  ],
+  "weather": [
+    {
+      "date": "Sat 12 Oct",
+      "maxtempC": "22",
+      "mintempC": "14",
+      "descMaxDay": "Partly cloudy"
+    },
+    {
+      "date": "Sun 13 Oct",
+      "maxtempC": "25",
+      "mintempC": "13",
+      "descMaxDay": "Sunny"
+    },
+    {
+      "date": "Mon 14 Oct",
+      "maxtempC": "26",
+      "mintempC": "15",
+      "descMaxDay": "Sunny"
+    },
+    {
+      "date": "Tue 15 Oct",
+      "maxtempC": "24",
+      "mintempC": "12",
+      "descMaxDay": "Light rain"
+    }
+  ]
+}
